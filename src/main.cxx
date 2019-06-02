@@ -33,46 +33,45 @@ void collision_converter_main(const std::string &file, const std::string &fileOu
 
 u8 output = OUTPUT_F3D;
 
-#define windows_is_bullshit _WIN32
+inline void print_bold(const std::string &s)
+{
+#ifdef _WIN32
+    std::cout << s;
+#else
+    std::cout << "\e[1m" << s << "\e[0m";
+#endif
+}
 
 inline void error_message(const std::string &message)
 {
-    // there might be a windows way to do this such as marking where bold string codes go and passing them to a general string formatter. TODO: Have a better way of dealing with fucking Windows bullshit
-#ifdef windows_is_bullshit
-    std::cout << "ERROR: " << message << std::endl;
-#else
-    std::cout << "\e[1mERROR:\e[0m " << message << std::endl;
-#endif
+    print_bold("ERROR: ");
+    std::cout << message << std::endl;
     exit(1);
 }
 
 inline void warn_message(const std::string &message)
 {
-#ifdef windows_is_bullshit
-    std::cout << "WARNING: " << message << std::endl;
-#else
-    std::cout << "\e[1mWARNING:\e[0m " << message << std::endl;
-#endif
+    print_bold("WARNING: ");
+    std::cout << message << std::endl;
 }
 
 inline void info_message(const std::string &message)
 {
-#ifdef windows_is_bullshit
-    std::cout << "INFO: " << message << std::endl;
-#else
-    std::cout << "\e[1mINFO:\e[0m " << message << std::endl;
-#endif
+    print_bold("INFO: ");
+    std::cout << message << std::endl;
 }
 
 void print_help(const std::string &name)
 {
-#ifdef windows_is_bullshit
-    std::cout << "- modconv 2 help -" << std::endl;
+    print_bold("- modconv 2 help -");
     std::cout << std::endl;
-    std::cout << "SYNOPSIS:" << std::endl;
+    std::cout << std::endl;
+    print_bold("SYNOPSIS:");
+    std::cout << std::endl;
     std::cout << name << " <parameters> <model>" << std::endl;
     std::cout << std::endl;
-    std::cout << "PARAMETERS:" << std::endl;
+    print_bold("PARAMETERS:");
+    std::cout << std::endl;
     std::cout << "--level - Export as a level" << std::endl;
     std::cout << "--dir   - Output directory" << std::endl;
     std::cout << "--scale - Multiplier to scale the exported model by" << std::endl;
@@ -86,35 +85,11 @@ void print_help(const std::string &name)
     std::cout << "  - Acceptable inputs are Y and Z." << std::endl;
     std::cout << "--help  - Bring up this menu and quit" << std::endl;
     std::cout << std::endl;
-    std::cout << "TIPS:" << std::endl;
+    print_bold("TIPS:");
+    std::cout << std::endl;
     std::cout << "- If you use SketchUp, set up direction to the Y axis using --up" << std::endl;
     std::cout << "- If your model lags, consider using Fast3DEX (--type f3dex)" << std::endl;
     std::cout << "- If on console and or angrylion's you experience triangle warping, subdivide the problematic triangle" << std::endl;
-#else
-    std::cout << "-\e[1m modconv 2 help -\e[0m" << std::endl;
-    std::cout << std::endl;
-    std::cout << "\e[1mSYNOPSIS:\e[0m" << std::endl;
-    std::cout << name << " <parameters> <model>" << std::endl;
-    std::cout << std::endl;
-    std::cout << "\e[1mPARAMETERS:\e[0m" << std::endl;
-    std::cout << "--level - Export as a level" << std::endl;
-    std::cout << "--dir   - Output directory" << std::endl;
-    std::cout << "--scale - Multiplier to scale the exported model by" << std::endl;
-    std::cout << "--type  - What to export" << std::endl;
-    std::cout << "  - f3d       - Use Fast3D (default)" << std::endl;
-    std::cout << "  - f3dex     - Use Fast3DEX (requires f3dex to be enabled)" << std::endl;
-    std::cout << "  - rej       - Optimize for Fast3DEX Rej (64 vtx)" << std::endl;
-    std::cout << "  - collision - Export collision mesh" << std::endl;
-    std::cout << "  - goddard   - Export Mario head mesh" << std::endl;
-    std::cout << "--yup   - Use the Y axis for up" << std::endl;
-    std::cout << "  - Acceptable inputs are Y and Z." << std::endl;
-    std::cout << "--help  - Bring up this menu and quit" << std::endl;
-    std::cout << std::endl;
-    std::cout << "\e[1mTIPS:\e[0m" << std::endl;
-    std::cout << "- If you use SketchUp, set up direction to the Y axis using --up" << std::endl;
-    std::cout << "- If your model lags, consider using Fast3DEX (--type f3dex)" << std::endl;
-    std::cout << "- If on console and or angrylion's you experience triangle warping, subdivide the problematic triangle" << std::endl;
-#endif
 }
 
 /* GCC seems to think that the level bool is unused... */
@@ -122,11 +97,7 @@ void print_help(const std::string &name)
 
 int main(int argc, char* argv[])
 {
-#ifdef windows_is_bullshit
-    puts("- modconv 2.6 by red -");
-#else
-    puts("\e[1m- modconv 2.6 by red -\e[0m");
-#endif
+    print_bold("- modconv 2.6 by red -");
     std::string filePath = argv[argc - 1],
                 fileOut  = "model";
     s16 scale            = DEFAULT_SCALE;
@@ -208,5 +179,3 @@ int main(int argc, char* argv[])
     info_message("Finished!");
     return 0;
 }
-
-#undef windows_is_bullshit
