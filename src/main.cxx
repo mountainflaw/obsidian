@@ -98,6 +98,7 @@ void print_help(const std::string &name)
 int main(int argc, char* argv[])
 {
     print_bold("- modconv 2.6 by red -");
+    std::cout << std::endl;
     std::string filePath = argv[argc - 1],
                 fileOut  = "model";
     s16 scale            = DEFAULT_SCALE;
